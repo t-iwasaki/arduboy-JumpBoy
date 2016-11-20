@@ -43,7 +43,7 @@ void movePowerUp()
   if (powerup.spCount == 200) {
     powerup.spCount = 0;
     //
-    createPowerUp(random(3));
+    createPowerUp(random(4));
   }
 
   collisionPowerUp();
@@ -79,6 +79,15 @@ void collisionPowerUp()
         arduboy.tunes.tone(NOTE_C2, 80);
         powerup.active = false;
       }
+
+      if (powerup.type == 3) // coin add item
+      {
+        resetSpCount();
+        updateCurrentCoinMax(3);
+        arduboy.tunes.tone(NOTE_C3, 80);
+        powerup.active = false;
+      }
+      
     }
   }
 }
@@ -96,6 +105,9 @@ void drawPowerUp()
     }
     if (powerup.type == 2) {
       arduboy.drawSlowXYBitmap(powerup.x, powerup.y, bItemMinus, 8, 8, 1);
+    }
+    if (powerup.type == 3) {
+      arduboy.drawSlowXYBitmap(powerup.x, powerup.y, bItemAddCoins, 8, 8, 1);
     }
   }
 }

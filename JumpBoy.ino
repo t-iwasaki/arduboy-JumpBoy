@@ -16,7 +16,7 @@
 #define NOTE_A1  110  //spring
 #define NOTE_C2  131  //miss spring item(-)
 #define NOTE_G2  196
-#define NOTE_C3  262
+#define NOTE_C3  262  // add coins item
 #define NOTE_G3  392  //coin
 #define NOTE_C4  523  //heart item,spring item(+)
 
@@ -38,7 +38,7 @@ uint8_t  totalFrames = 4;
 int      pX = 20;
 int      pY = 0;
 uint8_t  pSpeed = 0;
-uint8_t  pASpeed = 1;
+uint8_t  pASpeed = 2;
 int      prevPX = 20;
 int      prevPY = 0;
 int      pDir = 270;
@@ -61,6 +61,7 @@ uint8_t  level = 1;
 int stage = 1;
 int record = 0;
 
+int concurrent_coin_max = 1;
 
 /*-------------------------------
     levelStart
@@ -69,14 +70,12 @@ void levelStart(int lvl)
 {
   pASpeed = 2;
 
+  arduboy.clearDisplay();
+
   if (lvl == 1) {
     stage = 1;
     lives = 3;
-    arduboy.clearDisplay();
     arduboy.drawSlowXYBitmap(17, 10, bStart, 96, 48, 1);
-  } else {
-    arduboy.clearDisplay();
-    arduboy.drawSlowXYBitmap(17, 10, bClear, 96, 48, 1);
   }
 
   arduboy.display();
@@ -84,7 +83,9 @@ void levelStart(int lvl)
   delay(2000);
 
   initSpring();
-  initCoin();
+  
+  initCoin(concurrent_coin_max,false);
+  
   initPowerUp();
 
   level = lvl;
@@ -114,20 +115,22 @@ void miss()
   ------------------------------*/
 void stageClear()
 {
-  stage++;
   record = stage;
-  pASpeed++;
 
-  if (stage > 4) {
+  if (stage % 3 == 0) {
     pASpeed = 2;
+  } else {
+    pASpeed++;
   }
+  stage++;
+
+  initSpring();
+  initCoin(concurrent_coin_max,false);
 
   arduboy.clearDisplay();
   arduboy.drawSlowXYBitmap(17, 10, bClear, 96, 48, 1);
-  initSpring();
-  initCoin();
-
   arduboy.display();
+
   delay(2000);
 }
 
@@ -198,15 +201,20 @@ void displayTitle()
   while (true) {
     delay( 30 );
     arduboy.clearDisplay();
-    arduboy.drawSlowXYBitmap(14, 1, bTitle, 104, 48, 1);
+
+    arduboy.setCursor(36, 1);
+    arduboy.print("JUMP BOY");
+    
+    arduboy.drawSlowXYBitmap(14, 12, bTitle, 104, 36, 1);
 
     flash++;
     flash %= 50;
 
     if (record > 0) {
-      arduboy.setCursor(30, 40);
-      arduboy.print("record: ");
-      arduboy.print(record);   
+      arduboy.setCursor(30, 44);
+      arduboy.print(" record: ");
+      arduboy.print(record);
+      arduboy.print(" ");         
     }
 
     if (flash < 25) {
