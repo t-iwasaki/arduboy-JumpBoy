@@ -36,6 +36,17 @@ void setAddSpring() {
 }
 
 /*-----------------------
+    setAddMaxSpring
+  ----------------------*/
+void setAddMaxSpring() {
+  for (int i = 0; i < 16; i++) {
+    pSprings[i] = 4;
+  }
+}
+
+
+
+/*-----------------------
     setDelSpring
   ----------------------*/
 void setDelSpring() {

@@ -18,7 +18,7 @@
 #define NOTE_G2  196
 #define NOTE_C3  262  // add coins item
 #define NOTE_G3  392  //coin
-#define NOTE_C4  523  //heart item,spring item(+)
+#define NOTE_C4  523  //heart item,spring item(+),flag item
 
 
 
@@ -171,7 +171,7 @@ void drawPlayer()
       //Serial.println("miss...");
       pY = 10;
 
-      // chexk gameover
+      // check gameover
       miss();
       
       pWait = millis() + 1000 * 3;
