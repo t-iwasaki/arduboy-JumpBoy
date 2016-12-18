@@ -39,6 +39,8 @@ int      pX = 20;
 int      pY = 0;
 uint8_t  pSpeed = 0;
 uint8_t  pASpeed = 2;
+uint8_t  savepASpeed = 2;
+
 int      prevPX = 20;
 int      prevPY = 0;
 int      pDir = 270;
@@ -122,6 +124,7 @@ void stageClear()
   } else {
     pASpeed++;
   }
+  savepASpeed = pASpeed;
   stage++;
 
   initSpring();
@@ -164,6 +167,9 @@ void drawPlayer()
   bool is_miss = false;
   if (pY >= 46) {
     collisionSpring(is_miss);
+
+    pASpeed = savepASpeed;
+
     if (!is_miss) {
       pDir = 270;
       pYY = -1 * pASpeed;
@@ -175,7 +181,10 @@ void drawPlayer()
       miss();
       
       pWait = millis() + 1000 * 3;
+      savepASpeed = pASpeed;
+      pASpeed = 1;
       pWaitFlg = true;
+
       //Serial.println(pWait);
       return;
     }

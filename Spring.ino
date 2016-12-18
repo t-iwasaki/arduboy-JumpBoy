@@ -85,7 +85,7 @@ void collisionSpring(bool &is_miss)
     //miss
     is_miss = true;
     
-    pSprings[a] = 0;
+    pSprings[a] = 1;
   } else {
     pSprings[a] -= 1;
   }
