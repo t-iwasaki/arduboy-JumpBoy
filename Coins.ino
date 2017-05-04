@@ -82,6 +82,16 @@ void moveCoin()
 }
 
 
+boolean _checkPlayerPosition(int x,int y)
+{
+  if (pX - 8 * 2 < x && x < pX + 8 * 3 &&
+      pY - 8 * 2 < y && y < pY + 8 * 3 ) {
+    return false;
+  }
+  return true;
+}
+
+
 void _createCoins()
 {
   for (int i = 0; i < coin.concurrent_coin_max; i++) {
@@ -92,13 +102,16 @@ void _createCoins()
         coins[i].x = 10 + i * 10;
         coins[i].y = 10 + 30;
       }
-    
-      coins[i].x = 10 + random(110);
-      coins[i].y = 10 + random(34);
+
+      int x = 10 + random(110);
+      int y = 10 + random(34);
+      if (_checkPlayerPosition(x,y)) {
+        coins[i].x = x;
+        coins[i].y = y;
 //      coins[i].spCount = 10 + random(20);
-      coins[i].spCount = 50;
-      coins[i].active = true;
-      
+        coins[i].spCount = 50;
+        coins[i].active = true;
+      }
     }
   }
 }
