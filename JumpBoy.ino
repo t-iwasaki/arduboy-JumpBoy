@@ -106,6 +106,7 @@ void miss()
 
   lives--;
   if (lives <= 0) {
+    delay(3000);
     displayTitle();
     levelStart(1);
   }
