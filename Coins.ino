@@ -108,8 +108,8 @@ void _createCoins()
       if (_checkPlayerPosition(x,y)) {
         coins[i].x = x;
         coins[i].y = y;
-//      coins[i].spCount = 10 + random(20);
-        coins[i].spCount = 50;
+        coins[i].spCount = 40 + random(80);
+//        coins[i].spCount = 50;
         coins[i].active = true;
       }
     }

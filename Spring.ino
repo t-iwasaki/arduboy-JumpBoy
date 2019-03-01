@@ -79,24 +79,28 @@ void collisionSpring(bool &is_miss)
 {
   arduboy.tunes.tone(NOTE_A1, 80);
 
-  // スプリングを減らす
-  int a = (int)(pX + 4) / 8;
-  if (pSprings[a] <= 0) {
-    //miss
-    is_miss = true;
-    
-    pSprings[a] = 1;
-  } else {
-    pSprings[a] -= 1;
+  int from = (int)(pX + 2) / 8;
+  int to   = (int)(pX + 6) / 8;
+
+  is_miss = true;
+  int i = from;
+  for (i = from; i <= to; i++) {
+    if (pSprings[i] > 0) {
+      pSprings[i] -= 1;
+      is_miss = false;
+      break;
+    }
+  }
+  if (is_miss) {
+    pSprings[from] = 1;
   }
 
-  //
+  // 全部なくなったらリセット
   int s = 0;
   for (int i = 0; i < 16; i++) {
     s += pSprings[i];
   }
   if (s == 0) {
-    //init
     initSpring();
   }
 }
