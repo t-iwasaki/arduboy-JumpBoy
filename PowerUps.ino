@@ -11,12 +11,32 @@ struct PowerUps
   float xspd = 0;
   float yspd = 0;
   uint8_t spCount = 0;
+  uint8_t no = 0;
+  uint8_t types[10] = {0, 1, 2, 3, 4, 0, 1, 2, 3, 4};
 } powerup;
 
 
-void initPowerUp(){
+void initPowerUp() {
+  powerup.no = 0;
   powerup.spCount = 0;
   powerup.active = false;
+  shuffle();
+}
+
+
+void shuffle() {
+  uint8_t work;
+  for (int i = 0; i < 10; i++) {
+    swap(&powerup.types[i], &powerup.types[random(10)]);
+  }
+}
+
+
+void swap(uint8_t *x, uint8_t *y) {
+  uint8_t  work;
+  work = *x;
+  *x = *y;
+  *y = work;
 }
 
 
@@ -42,10 +62,16 @@ void movePowerUp()
 
   if (powerup.spCount == 200) {
     powerup.spCount = 0;
-    //
-    createPowerUp(random(5));
   }
 
+  if (getCoinQty() % 5 == 0) {
+    if (getCoinQty() / 5 > powerup.no) {
+      //createPowerUp(random(5));
+      createPowerUp(powerup.types[powerup.no]);
+      powerup.spCount = 0;
+      powerup.no++;
+    }
+  }
   collisionPowerUp();
 }
 
@@ -60,8 +86,10 @@ void collisionPowerUp()
     {
       if (powerup.type == 0) // heart
       {
-        arduboy.tunes.tone(NOTE_C4, 80);
-        lives++;
+        if (lives <= MAXLIVES) {
+          arduboy.tunes.tone(NOTE_C4, 80);
+          lives++;
+        }
         powerup.active = false;
         powerup.x = 128;
       }
@@ -94,7 +122,7 @@ void collisionPowerUp()
         arduboy.tunes.tone(NOTE_C4, 80);
         powerup.active = false;
       }
-      
+
     }
   }
 }

@@ -55,7 +55,7 @@ uint8_t  boundY = 10;
 uint8_t  boundH = 10;
 
 const uint8_t MAXSPD = 4;
-const uint8_t MAXLIVES = 12;
+const uint8_t MAXLIVES = 3;
 
 uint8_t  lives = 3;
 uint8_t  level = 1;
@@ -86,7 +86,7 @@ void levelStart(int lvl)
 
   initSpring();
   
-  initCoin(concurrent_coin_max,false);
+  initCoin(concurrent_coin_max);
   
   initPowerUp();
 
@@ -129,7 +129,8 @@ void stageClear()
   stage++;
 
   initSpring();
-  initCoin(concurrent_coin_max,false);
+  initPowerUp();
+  initCoin(concurrent_coin_max);
 
   arduboy.clearDisplay();
   arduboy.drawSlowXYBitmap(17, 10, bClear, 96, 48, 1);
