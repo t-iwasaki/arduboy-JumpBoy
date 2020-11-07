@@ -21,8 +21,15 @@
 #define NOTE_C4  523  //heart item,spring item(+),flag item
 
 
+#define MODE_TITLE  1
+#define MODE_START  2
+#define MODE_RUNNING  3
+#define MODE_GAMECLEAR  4
+#define MODE_GAMEOVER  5
 
 Arduboy arduboy;
+
+uint8_t       pMode = MODE_TITLE;
 
 unsigned long lTime;
 const byte    FPS = 1000 / 30;
@@ -92,6 +99,8 @@ void levelStart(int lvl)
 
   level = lvl;
   pY = 24;
+
+  pMode = MODE_RUNNING;
 }
 
 
@@ -107,8 +116,7 @@ void miss()
   lives--;
   if (lives <= 0) {
     delay(3000);
-    displayTitle();
-    levelStart(1);
+    pMode = MODE_TITLE;
   }
 }
 
@@ -235,6 +243,7 @@ void displayTitle()
     arduboy.display();
 
     if (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)) {
+      pMode = MODE_START;
       break;
     }
   }
@@ -247,10 +256,8 @@ void displayTitle()
 void setup()
 {
   //Serial.print("Entering Setup");
-  arduboy.start();
+  arduboy. begin();
   displayTitle();
-
-  levelStart(1);
   lTime = millis();
   arduboy.initRandomSeed();
 }
@@ -261,6 +268,17 @@ void setup()
   ------------------------ */
 void loop()
 {
+  
+  if (pMode == MODE_TITLE) {
+    displayTitle();
+    return;
+  }
+
+  if (pMode == MODE_START) {
+    levelStart(1);
+    return;
+  }
+  
   if (pWaitFlg) {
     if (millis() > pWait) {
       //Serial.println("wait brake....");

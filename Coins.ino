@@ -36,7 +36,7 @@ void initCoin(int concurrent_coin_max,bool is_puzzle)
   coin.norma = (coin.is_puzzle) ? concurrent_coin_max : 20;
   coin.concurrent_coin_max = (concurrent_coin_max > CONCURRENT_COIN_MAX ) ? CONCURRENT_COIN_MAX : concurrent_coin_max;
   
-  for (int i = 0; i < sizeof(coins); i++) {
+  for (int i = 0; i < CONCURRENT_COIN_MAX; i++) {
     coins[i].active = false;
   }
 }
@@ -165,5 +165,3 @@ void drawCoin()
     }    
   }
 }
-
-
