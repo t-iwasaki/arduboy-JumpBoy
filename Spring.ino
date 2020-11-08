@@ -3,7 +3,7 @@
   --------------------- */
 uint8_t pSprings[]   = {1, 2, 3, 4, 3, 4, 3, 2, 1, 2, 1, 2, 3, 3, 4, 3};
 uint8_t pSprings_1[] = {1, 2, 3, 4, 3, 4, 3, 2, 1, 2, 1, 2, 3, 3, 4, 3};
-
+int16_t pScroll = 127;
 
 /*-----------------------
     initSpring
@@ -79,20 +79,20 @@ void collisionSpring(bool &is_miss)
 {
   arduboy.tunes.tone(NOTE_A1, 80);
 
-  int from = (int)(pX + 2) / 8;
-  int to   = (int)(pX + 6) / 8;
-
   is_miss = true;
-  int i = from;
-  for (i = from; i <= to; i++) {
-    if (pSprings[i] > 0) {
+  for (int i = 0; i < 16; i++)
+  {
+    //
+    int16_t x = pScroll - (i * 8);
+    if (x < 0) {
+      x = 127 + x;
+    }
+    x+=4;
+    if (pX <= x && x <= pX + 8 && pSprings[i] > 0) {
       pSprings[i] -= 1;
       is_miss = false;
       break;
     }
-  }
-  if (is_miss) {
-    pSprings[from] = 1;
   }
 
   // 全部なくなったらリセット
@@ -106,6 +106,17 @@ void collisionSpring(bool &is_miss)
 }
 
 /*-----------------------
+    moveSpring
+  ----------------------*/
+void moveSpring()
+{
+  pScroll--;
+  if (pScroll < 0) {
+    pScroll = 127;
+  }
+}
+
+/*-----------------------
     drawSpring
   ----------------------*/
 void drawSpring()
@@ -114,22 +125,30 @@ void drawSpring()
   for (int i = 0; i < 16; i++)
   {
     //
+    int16_t x = pScroll - (i * 8);
+    if (x < 0) {
+      x = 127 + x;
+    }
+
     switch ( pSprings[i] )
     {
       case 0:
-        arduboy.drawSlowXYBitmap(i * 8 , 56 , bEmpty, 8, 8, 0);
+        arduboy.drawSlowXYBitmap(x, 56, bEmpty, 8, 8, 0);
         break;
       case 1:
-        arduboy.drawSlowXYBitmap(i * 8 , 56 , bSpring1, 8, 8, 0);
+        arduboy.drawSlowXYBitmap(x, 56, bSpring1, 8, 8, 0);
         break;
       case 2:
-        arduboy.drawSlowXYBitmap(i * 8 , 56 , bSpring2, 8, 8, 0);
+        arduboy.drawSlowXYBitmap(x, 56, bSpring2, 8, 8, 0);
         break;
       case 3:
-        arduboy.drawSlowXYBitmap(i * 8 , 56 , bSpring3, 8, 8, 0);
+        arduboy.drawSlowXYBitmap(x, 56, bSpring3, 8, 8, 0);
         break;
       case 4:
-        arduboy.drawSlowXYBitmap(i * 8 , 56 , bSpring4, 8, 8, 0);
+        arduboy.drawSlowXYBitmap(x, 56, bSpring4, 8, 8, 0);
+        break;
+      default:
+        arduboy.drawSlowXYBitmap(x, 56, bEmpty, 8, 8, 0);
         break;
     }
   }

@@ -128,11 +128,11 @@ void stageClear()
 {
   record = stage;
 
-  if (stage % 3 == 0) {
+  pASpeed++;
+  if (pASpeed > 4) {
     pASpeed = 2;
-  } else {
-    pASpeed++;
   }
+
   savepASpeed = pASpeed;
   stage++;
 
@@ -354,6 +354,7 @@ void loop()
 
     movePowerUp();
     moveCoin();
+    moveSpring();
 
     arduboy.clearDisplay();
     lTime = millis();
