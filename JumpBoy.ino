@@ -77,7 +77,9 @@ int concurrent_coin_max = 1;
   ------------------------------*/
 void levelStart(int lvl)
 {
+  stage = 1;
   pASpeed = 2;
+  savepASpeed = 2;
 
   arduboy.clearDisplay();
 
@@ -128,11 +130,11 @@ void stageClear()
 {
   record = stage;
 
-  if (stage % 3 == 0) {
+  pASpeed++;
+  if (pASpeed > 4) {
     pASpeed = 2;
-  } else {
-    pASpeed++;
   }
+
   savepASpeed = pASpeed;
   stage++;
 
@@ -340,8 +342,8 @@ void loop()
       pX = 120;
     }
 
-    if (pX < 0) {
-      pX = 0;
+    if (pX < 8) {
+      pX = 8;
     }
 
 
@@ -354,6 +356,7 @@ void loop()
 
     movePowerUp();
     moveCoin();
+    moveSpring();
 
     arduboy.clearDisplay();
     lTime = millis();
