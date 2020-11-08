@@ -3,7 +3,7 @@
   --------------------- */
 uint8_t pSprings[]   = {1, 2, 3, 4, 3, 4, 3, 2, 1, 2, 1, 2, 3, 3, 4, 3};
 uint8_t pSprings_1[] = {1, 2, 3, 4, 3, 4, 3, 2, 1, 2, 1, 2, 3, 3, 4, 3};
-int16_t pScroll = 127;
+int16_t pScroll = 128;
 
 /*-----------------------
     initSpring
@@ -85,10 +85,10 @@ void collisionSpring(bool &is_miss)
     //
     int16_t x = pScroll - (i * 8);
     if (x < 0) {
-      x = 127 + x;
+      x = 128 + x;
     }
     x+=4;
-    if (pX <= x && x <= pX + 8 && pSprings[i] > 0) {
+    if (pX - 4 <= x && x <= pX + 12 && pSprings[i] > 0) {
       pSprings[i] -= 1;
       is_miss = false;
       break;
@@ -121,13 +121,13 @@ void moveSpring()
   ----------------------*/
 void drawSpring()
 {
-  arduboy.fillRect(0, 56, 127, 64, 1);
+  arduboy.fillRect(8, 56, 127, 64, 1);
   for (int i = 0; i < 16; i++)
   {
     //
     int16_t x = pScroll - (i * 8);
     if (x < 0) {
-      x = 127 + x;
+      x = 128 + x;
     }
 
     switch ( pSprings[i] )
