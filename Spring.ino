@@ -77,7 +77,7 @@ void setOddSpring() {
   ------------------------ */
 void collisionSpring(bool &is_miss)
 {
-  arduboy.tunes.tone(NOTE_A1, 80);
+  sound.tone(NOTE_A1, 80);
 
   is_miss = true;
   for (int i = 0; i < 16; i++)
