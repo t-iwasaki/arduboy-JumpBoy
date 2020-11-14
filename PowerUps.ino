@@ -60,7 +60,7 @@ void collisionPowerUp()
     {
       if (powerup.type == 0) // heart
       {
-        arduboy.tunes.tone(NOTE_C4, 80);
+        sound.tone(NOTE_C4, 80);
         lives++;
         powerup.active = false;
         powerup.x = 128;
@@ -68,7 +68,7 @@ void collisionPowerUp()
       if (powerup.type == 1) // spring=+1
       {
         setAddSpring();
-        arduboy.tunes.tone(NOTE_C4, 80);
+        sound.tone(NOTE_C4, 80);
         powerup.active = false;
       }
       if (powerup.type == 2) // spring=-1
@@ -76,7 +76,7 @@ void collisionPowerUp()
         // setAllOneSpring();
         // setOddSpring();
         setDelSpring();
-        arduboy.tunes.tone(NOTE_C2, 80);
+        sound.tone(NOTE_C2, 80);
         powerup.active = false;
       }
 
@@ -84,14 +84,14 @@ void collisionPowerUp()
       {
         resetSpCount();
         updateCurrentCoinMax(3);
-        arduboy.tunes.tone(NOTE_C3, 80);
+        sound.tone(NOTE_C3, 80);
         powerup.active = false;
       }
 
       if (powerup.type == 4) // flag item
       {
         setAddMaxSpring();
-        arduboy.tunes.tone(NOTE_C4, 80);
+        sound.tone(NOTE_C4, 80);
         powerup.active = false;
       }
       
@@ -121,5 +121,3 @@ void drawPowerUp()
     }
   }
 }
-
-

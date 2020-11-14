@@ -138,7 +138,7 @@ void _collisionCoins()
           coins[i].y < pY + 8 &&
           8 + coins[i].y > pY)
       {
-        arduboy.tunes.tone(NOTE_G3, 80);
+        sound.tone(NOTE_G3, 80);
         coin.qty++;
         coins[i].active = false;
         if (coin.qty >= coin.norma) {

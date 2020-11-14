@@ -6,12 +6,10 @@
     Game Copyright (C) 2016 takaiwa@gmail.com
 
   ----------------------------------*/
+#include <Arduboy2.h>
+#include <ArduboyTones.h>
 
-#include <SPI.h>
-#include <EEPROM.h>
-#include "Arduboy.h"
 #include "Bitmaps.h"
-
 
 #define NOTE_A1  110  //spring
 #define NOTE_C2  131  //miss spring item(-)
@@ -27,7 +25,8 @@
 #define MODE_GAMECLEAR  4
 #define MODE_GAMEOVER  5
 
-Arduboy arduboy;
+Arduboy2 arduboy;
+ArduboyTones sound(arduboy.audio.enabled);
 
 uint8_t       pMode = MODE_TITLE;
 
@@ -81,7 +80,7 @@ void levelStart(int lvl)
   pASpeed = 2;
   savepASpeed = 2;
 
-  arduboy.clearDisplay();
+  arduboy.clear();
 
   if (lvl == 1) {
     stage = 1;
@@ -111,7 +110,7 @@ void levelStart(int lvl)
   ------------------------------*/
 void miss()
 {
-  arduboy.tunes.tone(NOTE_C2, 160);
+  sound.tone(NOTE_C2, 160);
   
   initPowerUp();
 
@@ -141,7 +140,7 @@ void stageClear()
   initSpring();
   initCoin(concurrent_coin_max,false);
 
-  arduboy.clearDisplay();
+  arduboy.clear();
   arduboy.drawSlowXYBitmap(17, 10, bClear, 96, 48, 1);
   arduboy.display();
 
@@ -218,9 +217,10 @@ void drawPlayer()
 void displayTitle()
 {
   int flash = 0;
+  
   while (true) {
     delay( 30 );
-    arduboy.clearDisplay();
+    arduboy.clear();
 
     arduboy.setCursor(36, 1);
     arduboy.print("JUMP BOY");
@@ -258,7 +258,9 @@ void displayTitle()
 void setup()
 {
   //Serial.print("Entering Setup");
-  arduboy. begin();
+  arduboy.begin();
+  arduboy.audio.on();
+
   displayTitle();
   lTime = millis();
   arduboy.initRandomSeed();
@@ -269,8 +271,7 @@ void setup()
     LOOP
   ------------------------ */
 void loop()
-{
-  
+{ 
   if (pMode == MODE_TITLE) {
     displayTitle();
     return;
@@ -292,7 +293,6 @@ void loop()
       return;
     }
   }
-
 
   //Serial.print("Loop");
  
@@ -358,7 +358,7 @@ void loop()
     moveCoin();
     moveSpring();
 
-    arduboy.clearDisplay();
+    arduboy.clear();
     lTime = millis();
 
     drawHeader();
