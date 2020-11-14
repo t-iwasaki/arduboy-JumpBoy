@@ -110,10 +110,9 @@ void levelStart(int lvl)
   ------------------------------*/
 void miss()
 {
-  sound.tone(NOTE_C2, 160);
-  
+  pSpeed = 0;
+  sound.tone(NOTE_C2, 160); 
   initPowerUp();
-
   lives--;
   if (lives <= 0) {
     delay(3000);
@@ -174,38 +173,34 @@ void drawHeader()
   ------------------------ */
 void drawPlayer()
 {
-  bool is_miss = false;
-  if (pY >= 46) {
-    collisionSpring(is_miss);
-
-    pASpeed = savepASpeed;
-
-    if (!is_miss) {
-      pDir = 270;
-      pYY = -1 * pASpeed;
-    } else {
-      //Serial.println("miss...");
-      pY = 10;
-
-      // check gameover
-      miss();
-      
-      pWait = millis() + 1000 * 3;
-      savepASpeed = pASpeed;
-      pASpeed = 1;
-      pWaitFlg = true;
-
-      //Serial.println(pWait);
-      return;
+    bool is_miss = false;
+    if (pY >= 46) {
+      collisionSpring(is_miss);
+  
+      if (!is_miss) {
+        pDir = 270;
+        pYY = -1 * pASpeed;
+      } else {
+        //Serial.println("miss...");
+        pY = 12;
+  
+        // check gameover
+        miss();
+        
+        pWait = millis() + 1000 * 3;
+        savepASpeed = pASpeed;
+        pASpeed = 0;
+        pWaitFlg = true;
+  
+        //Serial.println(pWait);
+        return;
+      }
     }
-  }
-
-  if (pY <= 10) {
-    pDir == 90;
-    pYY = 1 * pASpeed;
-  }
-
-  pY += pYY;
+    if (pY <= 12) {
+      pDir == 90;
+      pYY = 1 * pASpeed;
+    }
+    pY += pYY;
 
   arduboy.drawSlowXYBitmap(pX , pY, bMan, 8, 8, 1);
 }
@@ -305,18 +300,29 @@ void loop()
     prevPY = pY;
     pSpeed = 0;
 
-    if (arduboy.pressed(UP_BUTTON)) {
-      pDir = 90;
-      pSpeed = pASpeed;
-    } else if (arduboy.pressed(DOWN_BUTTON)) {
-      pDir = 270;
-      pSpeed = pASpeed;
-    } else if (arduboy.pressed(LEFT_BUTTON)) {
-      pDir = 180;
-      pSpeed = pASpeed;
-    } else if (arduboy.pressed(RIGHT_BUTTON)) {
-      pDir = 0;
-      pSpeed = pASpeed;
+    if (pASpeed == 0) {
+      if (arduboy.buttonsState()) {
+        pASpeed = 1;
+        pSpeed = pASpeed;
+      }
+    } else {
+      if (arduboy.pressed(UP_BUTTON)) {
+        pDir = 90;
+        pASpeed = savepASpeed;
+        pSpeed = pASpeed;
+      } else if (arduboy.pressed(DOWN_BUTTON)) {
+        pDir = 270;
+        pASpeed = savepASpeed;
+        pSpeed = pASpeed;
+      } else if (arduboy.pressed(LEFT_BUTTON)) {
+        pDir = 180;
+        pASpeed = savepASpeed;
+        pSpeed = pASpeed;
+      } else if (arduboy.pressed(RIGHT_BUTTON)) {
+        pDir = 0;
+        pASpeed = savepASpeed;
+        pSpeed = pASpeed;
+      }
     }
 
     if (pSpeed > 0) {

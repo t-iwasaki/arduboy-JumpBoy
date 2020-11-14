@@ -14,7 +14,7 @@ struct PowerUps
 } powerup;
 
 
-void initPowerUp(){
+void initPowerUp() {
   powerup.spCount = 0;
   powerup.active = false;
 }
@@ -27,6 +27,11 @@ void createPowerUp(uint8_t type)
 
   powerup.x = 10 + random(110);
   powerup.y = 10 + random(34);
+
+  //
+  if (pX - 8 < powerup.x && powerup.x < pX + 16) {
+    return;
+  }
 
   powerup.type = type;
   powerup.active = true;
@@ -42,8 +47,15 @@ void movePowerUp()
 
   if (powerup.spCount == 200) {
     powerup.spCount = 0;
-    //
-    createPowerUp(random(5));
+
+    uint8_t r = random(100);
+    uint8_t item[] = {5, 20, 30, 45, 50};
+    for (int i = 0;i < 5;i++) {
+      if (r <= item[i]) {
+        createPowerUp(i);
+        break;
+      }
+    }
   }
 
   collisionPowerUp();
@@ -94,7 +106,6 @@ void collisionPowerUp()
         sound.tone(NOTE_C4, 80);
         powerup.active = false;
       }
-      
     }
   }
 }
