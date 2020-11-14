@@ -43,9 +43,9 @@ uint8_t  totalFrames = 4;
 
 int      pX = 20;
 int      pY = 0;
-uint8_t  pSpeed = 0;
-uint8_t  pASpeed = 2;
-uint8_t  savepASpeed = 2;
+float  pSpeed = 0;
+float  pASpeed = 2;
+float  savepASpeed = 2;
 
 int      prevPX = 20;
 int      prevPY = 0;
@@ -85,6 +85,7 @@ void levelStart(int lvl)
   if (lvl == 1) {
     stage = 1;
     lives = 3;
+    initSpeedScroll();
     arduboy.drawSlowXYBitmap(17, 10, bStart, 96, 48, 1);
   }
 
@@ -128,7 +129,10 @@ void stageClear()
 {
   record = stage;
 
-  pASpeed++;
+//  pASpeed++;
+  pASpeed+=0.5;
+  speedupScroll();
+
   if (pASpeed > 4) {
     pASpeed = 2;
   }

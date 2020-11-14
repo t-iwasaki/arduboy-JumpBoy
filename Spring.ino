@@ -4,6 +4,7 @@
 uint8_t pSprings[]   = {1, 2, 3, 4, 3, 4, 3, 2, 1, 2, 1, 2, 3, 3, 4, 3};
 uint8_t pSprings_1[] = {1, 2, 3, 4, 3, 4, 3, 2, 1, 2, 1, 2, 3, 3, 4, 3};
 int16_t pScroll = 128;
+int16_t pScrollSpeed = 1;
 
 /*-----------------------
     initSpring
@@ -110,9 +111,29 @@ void collisionSpring(bool &is_miss)
   ----------------------*/
 void moveSpring()
 {
-  pScroll--;
+////  pScroll--;
+  pScroll-=pScrollSpeed;
   if (pScroll < 0) {
     pScroll = 127;
+  }
+}
+
+/*-----------------------
+    initSpeedScroll
+  ----------------------*/
+void initSpeedScroll()
+{
+  pScrollSpeed = 1;
+}
+
+/*-----------------------
+    speedupScroll
+  ----------------------*/
+void speedupScroll()
+{
+  pScrollSpeed++;
+  if (pScrollSpeed > 5){
+    pScrollSpeed = 1;
   }
 }
 
